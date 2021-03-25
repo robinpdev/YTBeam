@@ -1,7 +1,6 @@
 let gauth = undefined;
 
 let roomsref = undefined;
-let mesref = undefined;
 var db = null;
 let auth = undefined;
 
@@ -22,9 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var app = firebase.initializeApp(firebaseConfig);
     }
 
-    db = firebase.database();
-    roomsref = db.ref('rooms');
-    mesref = db.ref('messages');
+    db = firebase.firestore(app);
+    roomsref = db.collection("rooms");
     auth = firebase.auth();
 
     gauth = new firebase.auth.GoogleAuthProvider();
@@ -37,50 +35,42 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    roomsref.off();
 
-    roomsref.on('child_added', (result) => {
-        let room = result.val();
-        $("#rooms").append(temp("roomstencil", {
-            key: result.key,
-            name: room.name
-        }));
-    });
 
-    roomsref.on('child_removed', (result => {
-        let room = result.val();
-        console.log('button[key="' + result.key + '"]');
-        $('button[key="' + result.key + '"]').remove();
-    }));
+    readdata();
+
+
 
 });
 
-async function newroom(name) {
-    const {
-        uid,
-        photoURL
-    } = auth.currentUser;
+async function readdata() {
+    const snapshot = await roomsref.get();
+    snapshot.docs.map(doc => {
+        console.log(doc.data());
+        console.log(doc.data().uid);
+        $("#rooms").append(temp("roomstencil", {
+            id: doc.id,
+            name: doc.data().name
+        }));
 
-    roomsref.push().set({
-        name: name,
-        createdAt: firebase.database.ServerValue.TIMESTAMP,
-        uid: uid,
-        photo: photoURL
-    })
-
-    db.ref('messages/' + name).push().set({
-        message: "room created!",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 }
 
-if(window.location.pathname != '/' && window.location.pathname != ''){
-    gotoroom(window.location.pathname);
-}
+async function newroom(name) {
+    const { uid, photoURL } = auth.currentUser;
 
-function gotoroom(name){
-    let newurl = window.location.protocol + '//' + window.location.hostname + ':' + location.port + '/room.html?key=' + name;
-    window.location.href = newurl;
+    await roomsref.doc(name).set({
+        name: name,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid: uid,
+        photo: photoURL
+    });
+
+    await roomsref.doc(name).collection('messages').doc('createmessage').set({
+        Text: "Room created",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid: '0'
+    });
 }
 
 function login() {
