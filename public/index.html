@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Welcome to YTBeam</title>
+
+	<script src="js/libs/jquery-3.6.0.min.js"></script>
+	<script src="js/libs/handlebars.js"></script>
+
+	<!-- update the version number as needed -->
+	<script defer src="/__/firebase/8.3.1/firebase-app.js"></script>
+	<!-- include only the Firebase features as you need -->
+	<script defer src="/__/firebase/8.3.1/firebase-auth.js"></script>
+	<script defer src="/__/firebase/8.3.1/firebase-firestore.js"></script>
+	<!-- initialize the SDK after all desired features are loaded -->
+
+
+	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="css/flexbox.css">
+
+</head>
+
+<body>
+
+	<div id="stencils" class="stencil">
+
+	</div>
+
+	<boxcol id="message">
+		<h2>Welcome</h2>
+		<h1>YTBeam development</h1>
+		<p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something
+			extraordinary!</p>
+
+		<boxcol class="center vcenter" id="rooms"> </boxcol>
+
+
+		<boxrow>
+			<input id="roomnamei" type="text" id="lname" name="lname" style="flex: 1;">
+			<button class="smallbutton">*</button>
+		</boxrox>
+		
+
+		<button onClick="login()">Log in</button>
+		<button onClick="logout()">Log out</button>
+	</boxcol>
+
+	<script src="./js/index.js"></script>
+	<script defer src="js/startup.js"></script>
+
+</body>
+
+</html>
