@@ -21,6 +21,7 @@
 
 
 	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="css/room.css">
 	<link rel="stylesheet" href="css/flexbox.css">
 
 </head>
@@ -31,14 +32,30 @@
 
 	</div>
 
-	<boxcol id="message">
-		<h2>Welcome</h2>
-		<h1>YTBeam development room</h1>
-		<p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something
-			extraordinary!</p>
+	<boxcol style="align-items: stretch; height: 100vh;" id="maincontent">
+
+		<boxrow class="stretch" style="width: 100%; height: 100%;">
+			<div style="flex: 0.7">
+				<div id="playercapsule" class="playerc" style="width: 100%; height: 100%;">
+					<div id="player"></div>
+				</div>
+			</div>
+			<boxcol class="chatbox" style="flex: 0.3">
+				<boxcol id="messages" style="flex: 1;">
+
+				</boxcol>
+				<boxrow>
+					<input id="messagei" type="text" id="lname" style="flex: 1;">
+					<button class="smallbutton">send</button>
+				</boxrow>
+			</boxcol>
+		</boxrow>
+
 	</boxcol>
 
-	<script defer src="js/startup.js"></script>
+	<script src="./js/startup.js"></script>
+	<script src="./js/room.js"></script>
+
 
 </body>
 

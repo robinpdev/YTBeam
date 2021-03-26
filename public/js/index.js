@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     roomsref.off();
-
+    console.log("going in");
     roomsref.on('child_added', (result) => {
         let room = result.val();
         $("#rooms").append(temp("roomstencil", {
@@ -61,7 +61,7 @@ async function newroom(name) {
         photoURL
     } = auth.currentUser;
 
-    roomsref.push().set({
+    db.ref('rooms/' + name).set({
         name: name,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         uid: uid,
@@ -69,18 +69,10 @@ async function newroom(name) {
     })
 
     db.ref('messages/' + name).push().set({
-        message: "room created!",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        uid: 'server',
+        text: "room created!",
+        createdAt: firebase.database.ServerValue.TIMESTAMP
     });
-}
-
-if(window.location.pathname != '/' && window.location.pathname != ''){
-    gotoroom(window.location.pathname);
-}
-
-function gotoroom(name){
-    let newurl = window.location.protocol + '//' + window.location.hostname + ':' + location.port + '/room.html?key=' + name;
-    window.location.href = newurl;
 }
 
 function login() {

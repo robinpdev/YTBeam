@@ -1,1 +1,1 @@
-firebase serve --host camera.local
+firebase serve --host 192.168.0.99

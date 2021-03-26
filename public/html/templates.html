@@ -15,3 +15,16 @@
 <button id="roomstencil" class="roomelement" style="background: #ffa100;" key="{{key}}" onclick="gotoroom('{{name}}')">
     {{name}}
 </button>
+
+<div id="fmessagestencil" class="message foreign" key="{{key}}">
+    {{text}}
+</div>
+
+<div id="dmessagestencil" key="{{key}}">
+    <boxrow>
+        <div style="flex: 1;"></div>
+        <div class="message domestic">
+            {{text}}
+        </div>
+    </boxrow>
+</div>
