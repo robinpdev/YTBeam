@@ -22,20 +22,22 @@ document.addEventListener('DOMContentLoaded', function () {
         var app = firebase.initializeApp(firebaseConfig);
     }
 
-    db = firebase.database();
-    roomsref = db.ref('rooms');
-    mesref = db.ref('messages');
     auth = firebase.auth();
-
     gauth = new firebase.auth.GoogleAuthProvider();
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-            var uid = user.uid;
+            uid = user.uid;
+            photoURL = user.photoURL;
             console.log(uid);
         } else {
-            console.log("no user");
+            console.log("no user, redirecting to login page...");
+            window.location.href = '/login.html';
         }
     });
+
+    db = firebase.database();
+    roomsref = db.ref('rooms');
+    mesref = db.ref('messages');
 
     roomsref.off();
     console.log("going in");

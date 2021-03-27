@@ -10,12 +10,15 @@ let uid = undefined;
 let createtime = 0;
 
 let player = undefined;
+let dbok = false;
+let ytok = false;
 
+//this is the startup function which starts all procedures
 document.addEventListener('DOMContentLoaded', function () {
     console.log("startup...");
     roomid = window.location.search.replace('?key=', '');
 
-    // 2. This code loads the IFrame Player API code asynchronously.
+    // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
 
     tag.src = "https://www.youtube.com/iframe_api";
@@ -32,25 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
         appId: "1:161790539788:web:c7277bb637e4a5dda39629"
     };
 
+    //if firebase project has not been initialized
     if (!firebase.apps.length) {
         var app = firebase.initializeApp(firebaseConfig);
     }
 
-    db = firebase.database();
-
-    roomsref = db.ref('rooms/' + roomid);
-    roomsref.on('value', (result) => {
-        let room = result.val();
-        console.log(room.createdAt);
-        console.log(new Date(room.createdAt));
-
-        createtime= new Date().getTime();
-        console.log(createtime);
-    });
-
-    mesref = db.ref('messages/' + roomid);
     auth = firebase.auth();
-
     gauth = new firebase.auth.GoogleAuthProvider();
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -58,33 +48,111 @@ document.addEventListener('DOMContentLoaded', function () {
             photoURL = user.photoURL;
             console.log(uid);
         } else {
-            console.log("no user");
+            console.log("no user, redirecting to login page...");
+            window.location.href = '/login.html?key=' + roomid;
         }
     });
 
-    mesref.on('child_added', (result) => {
-        console.log("new message");
-        let message = result.val();
-        console.log(message.text);
-        if (uid == message.uid) {
-            $("#messages").append(temp("dmessagestencil", {
-                key: result.key,
-                text: message.text
-            }));
-        } else {
-            $("#messages").append(temp("fmessagestencil", {
-                key: result.key,
-                text: message.text
-            }));
-        }
-    });
 
-    mesref.on('child_removed', (result => {
+    db = firebase.database();
+
+    roomsref = db.ref('rooms/' + roomid);
+    mesref = db.ref('messages/' + roomid);
+    roomsref.once('value', (result) => {
+        //TODO: this code is uglyyyy, fix it with a common function that gets called for setting message handlers
         let room = result.val();
-        console.log('button[key="' + result.key + '"]');
-        $('div[key="' + result.key + '"]').remove();
-    }));
+        if (!(result.val() !== null)) {
+            console.log("room does not exist");
+            const {
+                uid,
+                photoURL
+            } = auth.currentUser;
 
+            db.ref('rooms/' + roomid).set({
+                name: roomid,
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                uid: uid,
+                photo: photoURL
+            })
+
+            db.ref('messages/' + roomid).push().set({
+                uid: 'server',
+                text: "room created!",
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            });
+
+            roomsref.once('value', (roomresult) => {
+                let lroom = roomresult.val();
+
+                console.log("reading room");
+                console.log(lroom.createdAt);
+                console.log(new Date(lroom.createdAt));
+
+                createtime = lroom.createdAt;
+                dbok = true;
+                console.log("create: " + createtime);
+                onPlayerReady();
+
+                mesref.on('child_added', (mresult) => {
+                    console.log("reading messages")
+                    console.log("new message");
+                    let message = mresult.val();
+                    console.log(message.text);
+                    if (uid == message.uid) {
+                        $("#messages").append(temp("dmessagestencil", {
+                            key: mresult.key,
+                            text: message.text
+                        }));
+                    } else {
+                        $("#messages").append(temp("fmessagestencil", {
+                            key: mresult.key,
+                            text: message.text
+                        }));
+                    }
+                });
+
+                mesref.on('child_removed', (mresult => {
+                    let room = mresult.val();
+                    console.log('button[key="' + mresult.key + '"]');
+                    $('div[key="' + mresult.key + '"]').remove();
+                }));
+            });
+
+        } else {
+            console.log("reading room");
+            console.log(room.createdAt);
+            console.log(new Date(room.createdAt));
+
+            createtime = room.createdAt;
+            dbok = true;
+            console.log("create: " + createtime);
+            onPlayerReady();
+
+            mesref.on('child_added', (mresult) => {
+                console.log("reading messages")
+                console.log("new message");
+                let message = mresult.val();
+                console.log(message.text);
+                if (uid == message.uid) {
+                    $("#messages").append(temp("dmessagestencil", {
+                        key: mresult.key,
+                        text: message.text
+                    }));
+                } else {
+                    $("#messages").append(temp("fmessagestencil", {
+                        key: mresult.key,
+                        text: message.text
+                    }));
+                }
+            });
+
+            mesref.on('child_removed', (mresult => {
+                let room = mresult.val();
+                console.log('button[key="' + mresult.key + '"]');
+                $('div[key="' + mresult.key + '"]').remove();
+            }));
+        }
+    });
 });
 
 function sendmessage(message) {
@@ -114,28 +182,52 @@ function onYouTubeIframeAPIReady() {
         width: "100%",
         videoId: roomid, // commonroom: n9JCPzNKm7Q  synctest: ucZl6vQ_8Uo   triggers: H0T6a5KKnd4
         events: {
-            'onReady': onPlayerReady,
+            'onReady': function () {
+                ytok = true;
+                onPlayerReady();
+            },
             'onStateChange': onPlayerStateChange
         }
     });
 }
 
-function onPlayerReady(){
-    if(createtime != undefined){
-        player.playVideo();
+function onPlayerReady(event) {
+    if (ytok && dbok) {
+        //TODO: better sync by waiting for a whole second after room creation
         console.log("duration: " + player.getDuration());
         console.log("duration mils: " + player.getDuration() * 1000);
         let joindelta = new Date().getTime() - createtime;
-        console.log("delta: " + joindelta / 1000);
+        console.log("delta: " + joindelta);
+        let seektime = joindelta % (player.getDuration() * 1000);
+        seektime /= 1000;
+        console.log("seek: " + seektime * 60);
+        player.seekTo(seektime);
+        player.playVideo();
+    }
+}
+
+let playing = false;
+let prevplaystate = false;
+
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+        playing = true;
+    } else if (event.data == YT.PlayerState.PAUSED) {
+        playing = false;
+    }
+
+    if (playing == true && prevplaystate == false) {
+        console.log("duration: " + player.getDuration());
+        console.log("duration mils: " + player.getDuration() * 1000);
+        let joindelta = new Date().getTime() - createtime;
+        console.log("delta: " + joindelta);
         let seektime = joindelta % (player.getDuration() * 1000);
         seektime /= 1000;
         console.log("seek: " + seektime * 60);
         player.seekTo(seektime);
     }
-}
 
-function onPlayerStateChange(){
-
+    prevplaystate = playing;
 }
 
 function login() {

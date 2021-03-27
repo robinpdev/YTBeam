@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>YTBeam login</title>
+
+	<script src="js/libs/jquery-3.6.0.min.js"></script>
+	<script src="js/libs/handlebars.js"></script>
+
+	<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+	<script defer src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+
+	<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+	<script defer src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+
+	<!-- Add Firebase products that you want to use -->
+	<script defer src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+	<script defer src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+
+
+	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="css/flexbox.css">
+
+</head>
+
+<body>
+	<div id="stencils" class="stencil">
+
+	</div>
+
+	<boxcol id="message">
+		<h2>Welcome</h2>
+		<h1>Please login to YTBeam</h1>
+		<p>Your account id is used to verify that you are a real person and to keep out banned users, keeping everything safe!</p>
+
+		<boxcol class="center vcenter" id="rooms"> </boxcol>
+
+		<button onClick="login()">Log in</button>
+		<button onClick="logout()">Log out</button>
+	</boxcol>
+
+	<script src="./js/login.js"></script>
+	<script defer src="./js/startup.js"></script>
+
+</body>
+
+</html>
