@@ -1,6 +1,21 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+		"rooms":{
+      ".read": "auth != null",
+      "$room":{
+      	".read": "auth != null",
+      	".write": "newData.exists() && !data.exists() && newData.child('uid').val() == auth.uid && auth != null"
+    
+      }
+      },
+    "messages":{
+      "$messageroom":{
+        ".read": "auth != null",
+        "$message":{
+          ".read": "auth != null",
+        	".write": "newData.exists() && !data.exists() && newData.child('uid').val() == auth.uid && auth != null"
+        }
+      }
+    }
   }
 }

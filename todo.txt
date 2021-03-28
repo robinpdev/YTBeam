@@ -1,0 +1,1 @@
+TODO: database rules: !data.exists() werkt niet, alles updaten werkt, of wel? testen pls

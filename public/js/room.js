@@ -194,40 +194,44 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
     if (ytok && dbok) {
         //TODO: better sync by waiting for a whole second after room creation
-        console.log("duration: " + player.getDuration());
-        console.log("duration mils: " + player.getDuration() * 1000);
-        let joindelta = new Date().getTime() - createtime;
-        console.log("delta: " + joindelta);
-        let seektime = joindelta % (player.getDuration() * 1000);
-        seektime /= 1000;
-        console.log("seek: " + seektime * 60);
-        player.seekTo(seektime);
-        player.playVideo();
+        synchronise();
     }
 }
 
 let playing = false;
 let prevplaystate = false;
-
+//TODO: better syncing by correcting every 60 seconds or so, requires testing
 function onPlayerStateChange(event) {
+    if (event === 0) {
+        console.log("vid ended");
+    }
+
     if (event.data == YT.PlayerState.PLAYING) {
         playing = true;
     } else if (event.data == YT.PlayerState.PAUSED) {
         playing = false;
+    } else if (event.data == YT.PlayerState.ENDED) {
+        console.log("restarting...");
+        player.playVideo();
+        synchronise();
     }
 
     if (playing == true && prevplaystate == false) {
-        console.log("duration: " + player.getDuration());
-        console.log("duration mils: " + player.getDuration() * 1000);
-        let joindelta = new Date().getTime() - createtime;
-        console.log("delta: " + joindelta);
-        let seektime = joindelta % (player.getDuration() * 1000);
-        seektime /= 1000;
-        console.log("seek: " + seektime * 60);
-        player.seekTo(seektime);
+        synchronise();
     }
 
     prevplaystate = playing;
+}
+
+function synchronise() {
+    console.log("duration: " + player.getDuration());
+    console.log("duration mils: " + player.getDuration() * 1000);
+    let joindelta = new Date().getTime() - createtime;
+    console.log("delta: " + joindelta);
+    let seektime = joindelta % (player.getDuration() * 1000);
+    seektime /= 1000;
+    console.log("seek: " + seektime * 60);
+    player.seekTo(seektime);
 }
 
 function login() {
