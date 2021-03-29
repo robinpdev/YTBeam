@@ -71,7 +71,8 @@ async function newroom(name) {
     })
 
     db.ref('messages/' + name).push().set({
-        uid: 'server',
+        uid: uid,
+        sender: auth.currentUser.displayName,
         text: "room created!",
         createdAt: firebase.database.ServerValue.TIMESTAMP
     });

@@ -76,7 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
             })
 
             db.ref('messages/' + roomid).push().set({
-                uid: 'server',
+                uid: uid,
+                sender: auth.currentUser.displayName,
                 text: "room created!",
                 createdAt: firebase.database.ServerValue.TIMESTAMP
             });
@@ -101,11 +102,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (uid == message.uid) {
                         $("#messages").append(temp("dmessagestencil", {
                             key: mresult.key,
+                            sender: message.sender,
                             text: message.text
                         }));
                     } else {
                         $("#messages").append(temp("fmessagestencil", {
                             key: mresult.key,
+                            sender: message.sender,
                             text: message.text
                         }));
                     }
@@ -136,11 +139,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (uid == message.uid) {
                     $("#messages").append(temp("dmessagestencil", {
                         key: mresult.key,
+                        sender: message.sender,
                         text: message.text
                     }));
                 } else {
                     $("#messages").append(temp("fmessagestencil", {
                         key: mresult.key,
+                        sender: message.sender,
                         text: message.text
                     }));
                 }
@@ -158,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function sendmessage(message) {
     mesref.push().set({
         uid: uid,
+        sender: auth.currentUser.displayName,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         text: message,
         photo: photoURL

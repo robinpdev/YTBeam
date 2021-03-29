@@ -1,4 +1,5 @@
-<boxcol id="soundstencil" onclick="soundcatalogadd({{sid}})" class="sounditem center vcenter" style="text-align: center;">
+<boxcol id="soundstencil" onclick="soundcatalogadd({{sid}})" class="sounditem center vcenter"
+    style="text-align: center;">
     <i id="icon" class="fas {{icon}} fa-2x" style="color: white;"></i>
 </boxcol>
 
@@ -16,15 +17,17 @@
     {{name}}
 </button>
 
-<div id="fmessagestencil" class="message foreign" key="{{key}}">
-    {{text}}
-</div>
+<boxcol id="fmessagestencil" class="message foreign" key="{{key}}">
+    <div style="font-size: 12px;">{{sender}}:</div>
+    <p class="minimal">{{text}}</p>
+</boxcol>
 
-<div id="dmessagestencil" key="{{key}}">
+<div style="width: 100%;" id="dmessagestencil" class="messageparent" key="{{key}}">
     <boxrow>
         <div style="flex: 1;"></div>
-        <div class="message domestic">
-            {{text}}
-        </div>
+        <boxcol id="fmessagestencil" class="message domestic">
+            <div style="font-size: 12px;">{{sender}}:</div>
+            <p class="minimal">{{text}}</p>
+        </boxcol>
     </boxrow>
 </div>

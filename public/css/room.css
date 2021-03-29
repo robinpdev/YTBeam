@@ -11,7 +11,7 @@
     margin-top: 4px;
     margin-left: 4px;
     margin-right: 4px;
-    max-width: 100%;
+    max-width: 90%;
     color: white;
 
     -webkit-animation: fadein 0.4s; /* Safari, Chrome and Opera > 12.1 */
@@ -28,6 +28,13 @@
 .domestic{
     margin-right: 2%;
     background-color: rgb(9, 9, 105);
+}
+
+.minimal{
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    word-wrap: break-word;
 }
 
 @keyframes fadein {
