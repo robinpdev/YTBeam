@@ -95,23 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 onPlayerReady();
 
                 mesref.on('child_added', (mresult) => {
-                    console.log("reading messages")
-                    console.log("new message");
-                    let message = mresult.val();
-                    console.log(message.text);
-                    if (uid == message.uid) {
-                        $("#messages").append(temp("dmessagestencil", {
-                            key: mresult.key,
-                            sender: message.sender,
-                            text: message.text
-                        }));
-                    } else {
-                        $("#messages").append(temp("fmessagestencil", {
-                            key: mresult.key,
-                            sender: message.sender,
-                            text: message.text
-                        }));
-                    }
+                    newmessage(mresult);
                 });
 
                 mesref.on('child_removed', (mresult => {
@@ -132,23 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
             onPlayerReady();
 
             mesref.on('child_added', (mresult) => {
-                console.log("reading messages")
-                console.log("new message");
-                let message = mresult.val();
-                console.log(message.text);
-                if (uid == message.uid) {
-                    $("#messages").append(temp("dmessagestencil", {
-                        key: mresult.key,
-                        sender: message.sender,
-                        text: message.text
-                    }));
-                } else {
-                    $("#messages").append(temp("fmessagestencil", {
-                        key: mresult.key,
-                        sender: message.sender,
-                        text: message.text
-                    }));
-                }
+                newmessage(mresult);
             });
 
             mesref.on('child_removed', (mresult => {
@@ -159,6 +127,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function newmessage(mresult) {
+    console.log("reading messages")
+    console.log("new message");
+    let message = mresult.val();
+    console.log(message.text);
+
+    let date = new Date(message.createdAt);
+    let now = new Date();
+    let datetime = date.getHours() + ':' + date.getMinutes();
+    let dateday = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDay();
+    let thisdateday = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDay();
+    console.log(dateday);
+    let messagedata = {
+        key: mresult.key,
+        sender: message.sender,
+        text: message.text
+    };
+    if (dateday == thisdateday) {
+        messagedata.time = datetime;
+    } else {
+        messagedata.time = dateday + ' ' + datetime;
+    }
+    if (uid == message.uid) {
+        $("#messages").append(temp("dmessagestencil", messagedata));
+    } else {
+        $("#messages").append(temp("fmessagestencil", messagedata));
+    }
+}
 
 function sendmessage(message) {
     mesref.push().set({

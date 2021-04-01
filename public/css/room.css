@@ -42,38 +42,27 @@
     padding: 4px;
 }
 
-#linkies > boxrow{
+#linkies > a{
     transition: 0.24s;
-    
-    
     height: 100%;
-    
+    text-decoration: none;
+    text-align: center;
+    color: rgb(189, 0, 0);
+}
+
+#linkies > a > boxrow{
+    transition: 0.24s;
     align-items: center;
     padding-left: 4px;
     padding-right: 4px;
     border-radius: 4px;
     margin-right: 6px;
-}
-
-#linkies > boxrow > a{
-    color: rgb(189, 0, 0);
+    height: 100%;
     font-size: 2.4vh;
-    text-align: center;
-    text-decoration: none;
 }
 
-#linkies > boxrow > a{
-    color: rgb(189, 0, 0);
-    font-size: 2.4vh;
-    text-align: center;
-    text-decoration: none;
-}
-
-#linkies > boxrow > a:hover{
+#linkies > a > boxrow:hover{
     color: white;
-}
-
-#linkies > boxrow:hover{
     background: rgb(189, 0, 0);
 }
 

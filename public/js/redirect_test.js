@@ -11,11 +11,10 @@ var getParams = function (url) {
 	return params;
 };
 
-if(getParams(window.location.href).v != undefined){
-    gotoroom(getParams(window.location.href).v);
-} else if(window.location.pathname != '/' && window.location.pathname != ''){
-    gotoroom(window.location.pathname.replace('/', ''));
-}
+console.log(window.location.href);
+console.log(window.location.search);
+
+console.log(getParams("watch?v=_bDZNzMqf2M&list=PL259SQrrBF-JfV6-4nriDoH9x93URKhKA&index=17"));
 
 function gotoroom(name){
     let newurl = '/room.html?key=' + name;
