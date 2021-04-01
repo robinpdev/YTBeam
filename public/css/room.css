@@ -37,6 +37,46 @@
     word-wrap: break-word;
 }
 
+.menubar{
+    background: rgb(49, 49, 49);
+    padding: 4px;
+}
+
+#linkies > boxrow{
+    transition: 0.24s;
+    
+    
+    height: 100%;
+    
+    align-items: center;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 4px;
+    margin-right: 6px;
+}
+
+#linkies > boxrow > a{
+    color: rgb(189, 0, 0);
+    font-size: 2.4vh;
+    text-align: center;
+    text-decoration: none;
+}
+
+#linkies > boxrow > a{
+    color: rgb(189, 0, 0);
+    font-size: 2.4vh;
+    text-align: center;
+    text-decoration: none;
+}
+
+#linkies > boxrow > a:hover{
+    color: white;
+}
+
+#linkies > boxrow:hover{
+    background: rgb(189, 0, 0);
+}
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
