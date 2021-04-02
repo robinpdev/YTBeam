@@ -66,6 +66,29 @@
     background: rgb(189, 0, 0);
 }
 
+.accentlink{
+    color: white;
+    background: rgb(189, 0, 0);
+    border-radius: 4px;
+}
+
+.accentlink > boxrow{
+    color: white;
+    transition: 0.24s;
+}
+
+.accentlink > boxrow:hover{
+    color: rgb(189, 0, 0);
+}
+
+.accentlink:hover{
+    color: rgb(189, 0, 0);
+    background: none;
+    background-color: none;
+    border-color: rgb(189, 0, 0);
+    cursor: pointer;
+}
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }

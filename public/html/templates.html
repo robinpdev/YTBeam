@@ -18,7 +18,10 @@
 </button>
 
 <boxcol id="fmessagestencil" class="message foreign" key="{{key}}">
-    <div style="font-size: 12px;">{{sender}} at {{time}}:</div>
+    <boxrow>
+        <div style="font-size: 12px; color: hsl({{sendercolor}}, 50%, 70%);">{{sender}}</div>
+        <div style="font-size: 12px;">&nbspat {{time}}</div>
+    </boxrow>
     <p class="minimal">{{text}}</p>
 </boxcol>
 
@@ -26,7 +29,10 @@
     <boxrow>
         <div style="flex: 1;"></div>
         <boxcol id="fmessagestencil" class="message domestic">
-            <div style="font-size: 12px;">{{sender}} at {{time}}:</div>
+            <boxrow>
+                <div style="font-size: 12px; color: hsl({{sendercolor}}, 50%, 70%);">{{sender}}</div>
+                <div style="font-size: 12px;">&nbspat {{time}}</div>
+            </boxrow>
             <p class="minimal">{{text}}</p>
         </boxcol>
     </boxrow>
