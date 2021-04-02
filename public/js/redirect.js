@@ -15,6 +15,8 @@ if(getParams(window.location.href).v != undefined){
     gotoroom(getParams(window.location.href).v);
 } else if(window.location.pathname != '/' && window.location.pathname != ''){
     gotoroom(window.location.pathname.replace('/', ''));
+}else{
+	window.location.replace("https://ytbeam-landing.webflow.io");
 }
 
 function gotoroom(name){
