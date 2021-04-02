@@ -1,15 +1,17 @@
-let gauth = undefined;
+//global variables, these are defined later in the startup function
+let gauth = undefined; //google auth service
+let roomref = undefined; //reference to the room in the database
+let mesref = undefined; //reference to the room's chatroom in the database
+var db = null; //database object
+let auth = undefined; //authentication object
+let roomid = undefined; //the id of the room also found in the url
+let uid = undefined; //the client's firebase uid
 
-let roomsref = undefined;
-let mesref = undefined;
-var db = null;
-let auth = undefined;
-let roomid = undefined;
-let uid = undefined;
+let createtime = 0; //epoch time of when the room was created
 
-let createtime = 0;
+let player = undefined; //youtube player object
 
-let player = undefined;
+//helper variables
 let dbok = false;
 let ytok = false;
 
@@ -20,11 +22,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
-
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+    //start the firebase project
     const firebaseConfig = {
         apiKey: "AIzaSyC6Cq8c5jprpZYin5iB_KSAdatFbRPicfk",
         authDomain: "ytbeam.firebaseapp.com",
@@ -34,14 +36,15 @@ document.addEventListener('DOMContentLoaded', function () {
         messagingSenderId: "161790539788",
         appId: "1:161790539788:web:c7277bb637e4a5dda39629"
     };
-
     //if firebase project has not been initialized
     if (!firebase.apps.length) {
         var app = firebase.initializeApp(firebaseConfig);
     }
-
+    //initialize all the things...
     auth = firebase.auth();
     gauth = new firebase.auth.GoogleAuthProvider();
+
+    //get user info if logged in, otherwise redirect to login page
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             uid = user.uid;
@@ -53,16 +56,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
     db = firebase.database();
 
-    roomsref = db.ref('rooms/' + roomid);
+    roomref = db.ref('rooms/' + roomid);
     mesref = db.ref('messages/' + roomid);
-    roomsref.once('value', (result) => {
-        //TODO: this code is uglyyyy, fix it with a common function that gets called for setting message handlers
+    roomref.once('value', (result) => {
         let room = result.val();
         if (!(result.val() !== null)) {
             console.log("room does not exist");
+            //when the room does not exist, create a record and a chatroom for it
             const {
                 uid,
                 photoURL
@@ -82,64 +84,52 @@ document.addEventListener('DOMContentLoaded', function () {
                 createdAt: firebase.database.ServerValue.TIMESTAMP
             });
 
-            roomsref.once('value', (roomresult) => {
+            //once the room has been created
+            roomref.once('value', (roomresult) => {
                 let lroom = roomresult.val();
-
-                console.log("reading room");
-                console.log(lroom.createdAt);
-                console.log(new Date(lroom.createdAt));
-
-                createtime = lroom.createdAt;
-                dbok = true;
-                console.log("create: " + createtime);
-                onPlayerReady();
-
-                mesref.on('child_added', (mresult) => {
-                    newmessage(mresult);
-                });
-
-                mesref.on('child_removed', (mresult => {
-                    let room = mresult.val();
-                    console.log('button[key="' + mresult.key + '"]');
-                    $('div[key="' + mresult.key + '"]').remove();
-                }));
+                attachmethods(lroom);
             });
 
         } else {
-            console.log("reading room");
-            console.log(room.createdAt);
-            console.log(new Date(room.createdAt));
-
-            createtime = room.createdAt;
-            dbok = true;
-            console.log("create: " + createtime);
-            onPlayerReady();
-
-            mesref.on('child_added', (mresult) => {
-                newmessage(mresult);
-            });
-
-            mesref.on('child_removed', (mresult => {
-                let room = mresult.val();
-                console.log('button[key="' + mresult.key + '"]');
-                $('div[key="' + mresult.key + '"]').remove();
-            }));
+            attachmethods(room);
         }
     });
 });
 
+function attachmethods(theroom) {
+    console.log("reading room");
+
+    createtime = theroom.createdAt;
+    dbok = true; // signal database as ook
+    console.log("create: " + createtime);
+    onPlayerReady(); //sync the player (if everything is alright)
+
+    mesref.on('child_added', (mresult) => {
+        newmessage(mresult);
+    });
+
+    mesref.on('child_removed', (mresult => {
+        let room = mresult.val();
+        console.log('button[key="' + mresult.key + '"]');
+        $('div[key="' + mresult.key + '"]').remove();
+    }));
+}
+
+//when a new message is received, can also be from the client himself
 function newmessage(mresult) {
     console.log("new message");
     let message = mresult.val();
     console.log(message.text);
 
+    //random coloring based on uid to differentiate anonymous users
     let color = "white";
-    if(message.sender == "anonymous"){
+    if (message.sender == "anonymous") {
         console.log("ano");
         Math.seedrandom(message.uid);
         color = Math.random() * 360;
     }
 
+    //for appropriate date format
     let date = new Date(message.createdAt);
     let now = new Date();
     let datetime = date.getHours() + ':' + date.getMinutes();
@@ -164,10 +154,11 @@ function newmessage(mresult) {
     }
 }
 
+//to send a new message from the client
 function sendmessage(message) {
     //TODO: change security rules for anonymous usernames
     let sendername = "anonymous";
-    if(!auth.currentUser.isAnonymous){
+    if (!auth.currentUser.isAnonymous) {
         sendername = auth.currentUser.displayName;
     }
 
@@ -180,6 +171,7 @@ function sendmessage(message) {
     });
 }
 
+//message input logic
 var messagei = document.getElementById("messagei");
 document.getElementById("messagei").addEventListener("keyup", function (event) {
     // Number 13 is the "Enter" key on the keyboard
@@ -192,6 +184,7 @@ document.getElementById("messagei").addEventListener("keyup", function (event) {
     }
 });
 
+//setup for the youtube player
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: "100%",
@@ -207,6 +200,7 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
+//when everything is initialized, synchonise
 function onPlayerReady(event) {
     if (ytok && dbok) {
         //TODO: better sync by waiting for a whole second after room creation
@@ -214,6 +208,8 @@ function onPlayerReady(event) {
     }
 }
 
+
+//synchronise and restart when needed (video ending, afer pause by client)
 let playing = false;
 let prevplaystate = false;
 //TODO: better syncing by correcting every 60 seconds or so, requires testing
@@ -239,6 +235,7 @@ function onPlayerStateChange(event) {
     prevplaystate = playing;
 }
 
+//synchronisation logic
 function synchronise() {
     console.log("duration: " + player.getDuration());
     console.log("duration mils: " + player.getDuration() * 1000);
@@ -250,10 +247,11 @@ function synchronise() {
     player.seekTo(seektime);
 }
 
-function copyLink(){
-    copyTextToClipboard(window.location.href, function(){
+//copy the room url to the clipboard
+function copyLink() {
+    copyTextToClipboard(window.location.href, function () {
         document.getElementById("copytext").innerHTML = "Link copied!";
-        setTimeout(function(){
+        setTimeout(function () {
             document.getElementById("copytext").innerHTML = "Copy room link";
         }, 2400);
     });
@@ -274,7 +272,7 @@ function logout() {
 //https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
 function copyTextToClipboard(text, callback) {
     var textArea = document.createElement("textarea");
-  
+
     //
     // *** This styling is an extra step which is likely not required. ***
     //
@@ -290,44 +288,44 @@ function copyTextToClipboard(text, callback) {
     // box asking the user for permission for the web page to
     // copy to the clipboard.
     //
-  
+
     // Place in the top-left corner of screen regardless of scroll position.
     textArea.style.position = 'fixed';
     textArea.style.top = 0;
     textArea.style.left = 0;
-  
+
     // Ensure it has a small width and height. Setting to 1px / 1em
     // doesn't work as this gives a negative w/h on some browsers.
     textArea.style.width = '2em';
     textArea.style.height = '2em';
-  
+
     // We don't need padding, reducing the size if it does flash render.
     textArea.style.padding = 0;
-  
+
     // Clean up any borders.
     textArea.style.border = 'none';
     textArea.style.outline = 'none';
     textArea.style.boxShadow = 'none';
-  
+
     // Avoid flash of the white box if rendered for any reason.
     textArea.style.background = 'transparent';
-  
-  
+
+
     textArea.value = text;
-  
+
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-  
+
     try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
-      callback();
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Copying text command was ' + msg);
+        callback();
     } catch (err) {
-      console.log('Oops, unable to copy');
-      alert("copying failed, you can copy the link in the address bar. Sorry!")
+        console.log('Oops, unable to copy');
+        alert("copying failed, you can copy the link in the address bar. Sorry!")
     }
-  
+
     document.body.removeChild(textArea);
-  }
+}
