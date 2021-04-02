@@ -24,14 +24,14 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(uid);
 
             let newurl = "";
-            if(window.location.search.includes("?key")){
+            if (window.location.search.includes("?key")) {
                 newurl = "/room.html" + window.location.search;
                 window.location.href = newurl;
-            }else{
+            } else {
                 newurl = "";
                 window.location.replace(window.location.protocol + '//' + window.location.hostname + ':' + location.port);
             }
-            
+
 
         } else {
             console.log("no user, this is expected");
@@ -43,6 +43,18 @@ document.addEventListener('DOMContentLoaded', function () {
 function login() {
     // using the object we will authenticate the user.
     firebase.auth().signInWithPopup(gauth);
+}
+
+function anonlogin() {
+    firebase.auth().signInAnonymously()
+        .then(() => {
+            console.log("ez login");
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log("anon login error");
+        });
 }
 
 function logout() {
