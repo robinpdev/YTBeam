@@ -1,5 +1,8 @@
 #custom
 etc/
+etc
+/etc/*
+etc/*
 
 # Logs
 logs
