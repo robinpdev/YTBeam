@@ -35,7 +35,7 @@ function redirect() {
     }
     else {
         newurl = "";
-        window.location.replace(window.location.protocol + '//' + window.location.hostname + ':' + location.port);
+        window.location.replace(window.location.protocol + '//' + window.location.hostname + ':' + location.port + '/joinroom.html');
     }
 }
 
