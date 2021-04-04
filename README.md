@@ -8,32 +8,26 @@
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
   <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">
-    <img alt="License: GNU--GPL" src="https://img.shields.io/github/license/robinpdev/YTBeam" />
+    <img alt="License: GNU--GPL" src="https://img.shields.io/badge/license-GPL-blue" />
   </a>
 </p>
 
-> WebApp that turns any youtube video into a tv-channel like livestream with chat.
+> A WebApp that turns any youtube video into a tv-channel like livestream with chat.
 
-### 🏠 [Homepage](https://github.com/robinpdev/YTBeam)
+### 🏠 [Homepage](https://ytbeam-landing.webflow.io)
 
 ### ✨ [Demo](https://ytbeam.web.app/room.html?v=aqz-KE-bpKQ)
 
-## Install
-
-```sh
-npm install
-```
-
 ## Usage
 
-```sh
 Go to a youtube video and change youtube.com to ytbeam.web.app in the address bar.
-```
+
 
 ## Author
 
 👤 **Robin Paret**
 
+* Email: [robinpdev@gmail.com](mailto:robinpdevgmail.com)
 * Website: https://ytbeam-landing.webflow.io
 * Github: [@robinpdev](https://github.com/robinpdev)
 
@@ -43,12 +37,12 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 ## Show your support
 
-Give a ⭐️ if this project helped you!
+Give a ⭐️ if this project is helpfull! It's also important that this website gets know, so please share with your friends and youtube communities.
 
 ## 📝 License
 
 Copyright © 2021 [Robin Paret](https://github.com/robinpdev).<br />
-This project is [GNU--GPL](https://www.gnu.org/licenses/gpl-3.0.html) licensed.
+This project is [GNU-GPL](https://www.gnu.org/licenses/gpl-3.0.html) licensed.
 
 ***
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
