@@ -10,6 +10,10 @@
   <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">
     <img alt="License: GNU--GPL" src="https://img.shields.io/badge/license-GPL-blue" />
   </a>
+
+  <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">
+    <img alt="Discord server" src="https://img.shields.io/discord/828348652736479292?label=Discord%20server" />
+  </a>
 </p>
 
 > A WebApp that turns any youtube video into a tv-channel like livestream with chat.
@@ -21,7 +25,6 @@
 ## Usage
 
 Go to a youtube video and change youtube.com to ytbeam.web.app in the address bar.
-
 
 ## Author
 
