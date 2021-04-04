@@ -15,10 +15,23 @@ let player = undefined; //youtube player object
 let dbok = false;
 let ytok = false;
 
+var getParams = function (url) {
+	var params = {};
+	var parser = document.createElement('a');
+	parser.href = url;
+	var query = parser.search.substring(1);
+	var vars = query.split('?').join(', ').split('&');
+	for (var i = 0; i < vars.length; i++) {
+		var pair = vars[i].split('=');
+		params[pair[0]] = decodeURIComponent(pair[1]);
+	}
+	return params;
+};
+
 //this is the startup function which starts all procedures
 document.addEventListener('DOMContentLoaded', function () {
     console.log("startup...");
-    roomid = window.location.search.replace('?key=', '');
+    roomid = getParams(window.location.href).v;
 
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -52,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(uid);
         } else {
             console.log("no user, redirecting to login page...");
-            window.location.href = '/login.html?key=' + roomid;
+            window.location.href = '/login.html?v=' + roomid;
         }
     });
 

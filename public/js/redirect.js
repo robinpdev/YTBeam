@@ -13,14 +13,12 @@ var getParams = function (url) {
 
 if(getParams(window.location.href).v != undefined){
     gotoroom(getParams(window.location.href).v);
-} else if(window.location.pathname != '/' && window.location.pathname != ''){
-    gotoroom(window.location.pathname.replace('/', ''));
 }else{
 	window.location.replace("https://ytbeam-landing.webflow.io");
 }
 
 function gotoroom(name){
-    let newurl = '/room.html?key=' + name;
+    let newurl = '/room.html?v=' + name;
     window.location.href = newurl;
 }
 
