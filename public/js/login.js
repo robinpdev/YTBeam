@@ -29,7 +29,11 @@ function redirect() {
     if (tags.v != undefined) {
         newurl = "/room.html" + '?v=' + tags.v;
         window.location.href = newurl;
-    } else {
+    }
+    else if(tags.page != undefined){
+        window.location.href = tags.page;
+    }
+    else {
         newurl = "";
         window.location.replace(window.location.protocol + '//' + window.location.hostname + ':' + location.port);
     }
@@ -70,7 +74,10 @@ function logout() {
 
     firebase.auth().signOut();
     console.log("logged out");
-    window.location.href = "https://ytbeam-landing.webflow.io"
+    setTimeout(function(){
+        window.location.href = "https://ytbeam-landing.webflow.io";
+    }, 1000);
+    
 }
 
 var getParams = function (url) {

@@ -16,16 +16,16 @@ let dbok = false;
 let ytok = false;
 
 var getParams = function (url) {
-	var params = {};
-	var parser = document.createElement('a');
-	parser.href = url;
-	var query = parser.search.substring(1);
-	var vars = query.split('?').join(', ').split('&');
-	for (var i = 0; i < vars.length; i++) {
-		var pair = vars[i].split('=');
-		params[pair[0]] = decodeURIComponent(pair[1]);
-	}
-	return params;
+    var params = {};
+    var parser = document.createElement('a');
+    parser.href = url;
+    var query = parser.search.substring(1);
+    var vars = query.split('?').join(', ').split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    return params;
 };
 
 //this is the startup function which starts all procedures
@@ -88,11 +88,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 createdAt: firebase.database.ServerValue.TIMESTAMP,
                 uid: uid,
                 photo: photoURL
-            })
+            });
 
+            let sendername = "anonymous";
+            if (!auth.currentUser.isAnonymous) {
+                sendername = auth.currentUser.displayName;
+            }
             db.ref('messages/' + roomid).push().set({
                 uid: uid,
-                sender: auth.currentUser.displayName,
+                sender: sendername,
                 text: "room created!",
                 createdAt: firebase.database.ServerValue.TIMESTAMP
             });
