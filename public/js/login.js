@@ -22,12 +22,12 @@ function startfirebase() {
     }
 }
 
-function redirect(user) {
+function redirect() {
     console.log("redirecting...");
     let tags = getParams(window.location.href);
     console.log(tags)
-    if (tags.id != undefined) {
-        newurl = "/room.html" + '?v=' + window.location.search;
+    if (tags.v != undefined) {
+        newurl = "/room.html" + '?v=' + tags.v;
         window.location.href = newurl;
     } else {
         newurl = "";
