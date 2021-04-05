@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
         projectId: "ytbeam",
         storageBucket: "ytbeam.appspot.com",
         messagingSenderId: "161790539788",
-        appId: "1:161790539788:web:c7277bb637e4a5dda39629"
+        appId: "1:161790539788:web:c7277bb637e4a5dda39629",
+        measurementId: "G-L9EZTZY0PL"
     };
     //if firebase project has not been initialized
     if (!firebase.apps.length) {
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             uid = user.uid;
             photoURL = user.photoURL;
             console.log(uid);
+            firebase.analytics(); //This is to estimate billing and i'm not blind on how much the site is being used.
         } else {
             console.log("no user, redirecting to login page...");
             window.location.href = '/login.html?v=' + roomid;
