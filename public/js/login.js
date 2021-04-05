@@ -41,6 +41,8 @@ function redirect() {
 
 function login() {
 
+    startfirebase();
+
     firebase.auth().onAuthStateChanged((user) => {
         console.log("auth changed");
         if (user) {

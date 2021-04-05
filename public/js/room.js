@@ -346,3 +346,13 @@ function copyTextToClipboard(text, callback) {
 
     document.body.removeChild(textArea);
 }
+/*
+{
+    "uid": "b0369780-92f0-405e-beb1-8d8c9a727b82",
+    "sender": "anonymous",
+    "createdAt": 123456,
+    "text": "letest",
+    "photo": "https://google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
+}
+
+*/

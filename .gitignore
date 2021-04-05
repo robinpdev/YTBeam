@@ -3,6 +3,7 @@ etc/
 etc
 /etc/*
 etc/*
+graphics/
 
 # Logs
 logs
