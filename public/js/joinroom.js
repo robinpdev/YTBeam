@@ -44,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function logout(){
+    firebase.auth().signOut();
+    window.location.href = "/login.html";
+}
+
 function joinroom() {
     let tags = getParams(linkinput.value);
     if (tags.v != undefined) {
