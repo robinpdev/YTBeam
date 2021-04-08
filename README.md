@@ -11,7 +11,7 @@
     <img alt="License: GNU--GPL" src="https://img.shields.io/badge/license-GPL-blue" />
   </a>
 
-  <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">
+  <a href="https://discord.gg/UyYmmXQaHF" target="_blank">
     <img alt="Discord server" src="https://img.shields.io/discord/828348652736479292?label=Discord%20server" />
   </a>
 </p>
