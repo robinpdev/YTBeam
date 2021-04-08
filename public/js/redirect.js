@@ -17,11 +17,11 @@ if(getParams(window.location.href).v != undefined){
 	gotoroom(window.location.pathname.replace('/', ''));
 }
 else{
-	window.location.replace("https://ytbeam-landing.webflow.io");
+	window.location.replace("https://ytrerun.webflow.io");
 }
 
 function gotoroom(name){
-    let newurl = '/room.html?v=' + name;
+    let newurl = 'https://ytrerun.web.app/room.html?v=' + name;
     window.location.href = newurl;
 }
 

@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
         projectId: "ytbeam",
         storageBucket: "ytbeam.appspot.com",
         messagingSenderId: "161790539788",
-        appId: "1:161790539788:web:c7277bb637e4a5dda39629",
-        measurementId: "G-L9EZTZY0PL"
-    };
+        appId: "1:161790539788:web:08effd61c5fb7f58a39629",
+        measurementId: "G-KH2TMMZW9Q"
+      };
     //if firebase project has not been initialized
     if (!firebase.apps.length) {
         var app = firebase.initializeApp(firebaseConfig);
